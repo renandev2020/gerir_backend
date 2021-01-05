@@ -24,7 +24,7 @@ namespace Senai.Gerir.Api.Interfaces
         /// Edita um us~uário
         /// </summary>
         /// <param name="usuario">Contém os dados do usuário</param>
-        /// <returns></returns>
+        /// <returns>Retorna um usuário</returns>
         Usuario Editar(Usuario usuario);
 
         /// <summary>

@@ -20,7 +20,17 @@ namespace Senai.Gerir.Api.Repositorios
 
         public Usuario BuscarPorId(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                //Busca o usuario pelo seu Id usando o Find
+                var usuario = _context.Usuarios.Find(id);
+
+                return usuario;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public Usuario Cadastrar(Usuario usuario)
@@ -42,7 +52,32 @@ namespace Senai.Gerir.Api.Repositorios
 
         public Usuario Editar(Usuario usuario)
         {
-            throw new NotImplementedException();
+            try
+            {
+                //Busca o usuário no banco
+                var usuarioexiste = BuscarPorId(usuario.Id);
+
+                //Verifica se o usuário existe
+                if (usuarioexiste == null)
+                    throw new Exception("Usuário não encontrado");
+
+                //Altera os valores do usuário
+                usuarioexiste.Nome = usuario.Nome;
+                usuarioexiste.Email = usuario.Email;
+
+                if (!string.IsNullOrEmpty(usuario.Senha))
+                    usuarioexiste.Senha = usuario.Senha;
+
+                _context.Usuarios.Update(usuarioexiste);
+                _context.SaveChanges();
+
+                return usuarioexiste;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
 
         public Usuario Logar(string email, string senha)
@@ -62,7 +97,18 @@ namespace Senai.Gerir.Api.Repositorios
 
         public void Remover(Guid Id)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                var usuario = BuscarPorId(Id);
+
+                _context.Usuarios.Remove(usuario);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

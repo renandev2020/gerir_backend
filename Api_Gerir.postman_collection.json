@@ -1,0 +1,34 @@
+{
+	"info": {
+		"_postman_id": "85d2dd7a-907e-4a15-9cb1-f779d2c9bbad",
+		"name": "Gerir_Api_Reforço",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:65242"
+		}
+	]
+}

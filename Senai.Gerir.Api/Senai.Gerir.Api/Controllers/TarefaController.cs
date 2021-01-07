@@ -131,5 +131,71 @@ namespace Senai.Gerir.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+    
+        [Authorize]
+        [HttpPut("{id}")]
+        public IActionResult Editar(Guid id, Tarefa tarefa)
+        {
+            try
+            {
+                //Pega o valor do usuário que esta logado
+                var usuarioid = HttpContext.User.Claims.FirstOrDefault(
+                                c => c.Type == JwtRegisteredClaimNames.Jti
+                            );
+
+                //Busca uma tarefa pelo seu Id
+                var tarefaexiste = _tarefaRepositorio.BuscarPorId(id);
+
+                //Verifica se a tarefa existe
+                if (tarefaexiste == null)
+                    return NotFound();
+
+                //Verifica se a tarefa é do usuário logado
+                if (tarefaexiste.UsuarioId != new Guid(usuarioid.Value))
+                    return Unauthorized("Usuário não tem permissão");
+
+                //Atribui o valor do Id da tarefa ao id recebido como parametro na url
+                tarefa.Id = id;
+                _tarefaRepositorio.Editar(tarefa);
+
+                return Ok(tarefa);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+    
+        [Authorize]
+        [HttpDelete("{id}")]
+        public IActionResult Remover(Guid id)
+        {
+            try
+            {
+                //Pega o valor do usuário que esta logado
+                var usuarioid = HttpContext.User.Claims.FirstOrDefault(
+                                c => c.Type == JwtRegisteredClaimNames.Jti
+                            );
+
+                //Busca uma tarefa pelo seu Id
+                var tarefaexiste = _tarefaRepositorio.BuscarPorId(id);
+
+                //Verifica se a tarefa existe
+                if (tarefaexiste == null)
+                    return NotFound();
+
+                //Verifica se a tarefa é do usuário logado
+                if (tarefaexiste.UsuarioId != new Guid(usuarioid.Value))
+                    return Unauthorized("Usuário não tem permissão");
+
+                _tarefaRepositorio.Remover(id);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

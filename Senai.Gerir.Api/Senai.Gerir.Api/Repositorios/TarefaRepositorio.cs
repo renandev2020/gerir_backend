@@ -68,7 +68,28 @@ namespace Senai.Gerir.Api.Repositorios
 
         public Tarefa Editar(Tarefa tarefa)
         {
-            throw new NotImplementedException();
+            try
+            {
+                //Busca a Tarefa
+                var tarefaexiste = BuscarPorId(tarefa.Id);
+
+                //Altera os dados da tarefa
+                tarefaexiste.Titulo = tarefa.Titulo;
+                tarefaexiste.Descricao = tarefa.Descricao;
+                tarefaexiste.Dataentrega = tarefa.Dataentrega;
+                tarefaexiste.Categoria = tarefa.Categoria;
+
+                //Altera a tarefa no contexto
+                _context.Tarefas.Update(tarefaexiste);
+                //Salva a tarefa
+                _context.SaveChanges();
+
+                return tarefaexiste;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public List<Tarefa> Listar(Guid IdUsuario)
@@ -87,7 +108,20 @@ namespace Senai.Gerir.Api.Repositorios
 
         public void Remover(Guid IdTarefa)
         {
-            throw new NotImplementedException();
+            try
+            {
+                //Busca a tarefa pelo
+                var tarefa = BuscarPorId(IdTarefa);
+
+                //Remove do contexto em memória
+                _context.Tarefas.Remove(tarefa);
+                //Salva as alterações do contexto
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

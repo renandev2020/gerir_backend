@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import {Container, Form, Button} from 'react-bootstrap';
-import logo from '../../logo.svg';
+import  logo from '../../logo.svg';
 import './index.css';
 
 
-const Login = () =>{
+const Login = () => {
 
-    //Public string Email { get; set; };
+    //public string Email { get; set; };
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
 
     //Chama o evento de logar na Api
     const logar = (event) => {
-        event.preventDefault();
-        
+        event.preventDefault();        
 
         //representa o objeto que contém
         //os dados do usuário para login
@@ -21,23 +20,37 @@ const Login = () =>{
             "email" : email,
             "senha" : senha
         }
+
         console.log(objLogin);
 
         fetch('http://localhost:65242/api/usuario/login',{
             method : 'POST',
             body : JSON.stringify(objLogin),
             headers : {
-                'context-type' : 'application/json'
+                'content-type' : 'application/json'
             }
         })
         .then(response => {
-            console.log(response);
-        })
+            //Verifica se a resposta da Api esta ok
+            if(response.ok){
+                return response.json();
+            }
 
+            //Caso tenha retornado algum erro da api informa 
+            //o usário
+            alert("Dados inválidos");
+        })
+        .then(data => {
+            console.log(data);
+
+            localStorage.setItem('token-gerir', data.token);
+
+            //Navegar para as tarefas
+        })
     }
 
     return (
-        <div>           
+        <div>
             <Container className='form-height'>
                 <Form className='form-signin' onSubmit={event => logar(event)}>
                     <div className='text-center'>
@@ -61,9 +74,9 @@ const Login = () =>{
                     <br/><br/>
                     <a href='/cadastrar' style={{ marginTop :'30px'}}>Não tenho conta!</a>
                 </Form>
-            </Container>        
+            </Container>
         </div>
-    )
+    );
 }
 
 export default Login;

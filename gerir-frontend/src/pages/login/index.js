@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import {Container, Form, Button} from 'react-bootstrap';
 import  logo from '../../logo.svg';
 import './index.css';
-
+import {useHistory} from 'react-router-dom';
 
 const Login = () => {
+    let history = useHistory();
 
     //public string Email { get; set; };
     const [email, setEmail] = useState('');
@@ -44,6 +45,8 @@ const Login = () => {
             console.log(data);
 
             localStorage.setItem('token-gerir', data.token);
+
+            history.push("/tarefas");
 
             //Navegar para as tarefas
         })
